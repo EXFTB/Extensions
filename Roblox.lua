@@ -1,4 +1,4 @@
-if not (getfenv()["hook"] or getfenv()["hookmetamethod"] or getfenv()["Drawing"]) then return warn("Executor will not run all functions required for this extension") end
+if getfenv()["hookfunction"] == nil or getfenv()["hookmetamethod"] == nil then return warn("Executor will not run all functions required for this extension") end
 
 local Extension = {
     Variables = {},
