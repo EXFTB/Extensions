@@ -14,6 +14,7 @@ Functions.GetRankInGroup(Player: player, Group: group, Example: boolean)
 Functions.Hook(OldFunction: any, NewFunction: any, Example: boolean)
 Functions.HookMethod(Table: any, Method: any, NewFunction: any, Example: boolean)
 Functions.CreateProxy(Target: any, Example: boolean)
+Functions.GarbageCollectionHook(Function: string, NewFunction: any, Example: boolean)
 Functions.ClearCache()
 
 --Hook
@@ -25,7 +26,7 @@ end)
 
 --Hookmetamethod with CreateProxy (to avoid C-Stack overflow when using namecallhooks)
 local OldCall = nil
-OldCall = Extension.Functions.HookMethod(game, "__namecall", function(self)
+OldCall = Functions.HookMethod(game, "__namecall", function(self)
     
     if self:IsA("BasePart") then --Using : would usually cause C-Stack overflow in a namecall hook, therefore you have to do self.IsA(self, "BasePart"). However you can do this another way with the CreateProxy function.
         print("True!")
@@ -37,4 +38,9 @@ OldCall = Extension.Functions.HookMethod(game, "__namecall", function(self)
     end
     
     return OldCall(self)
+end)
+
+--GarbageCollectionHook (something I just put together)
+Functions.GarbageCollectionHook("Kick", function() --Will basically catch all functions in the game called "Kick" on the client.
+    return wait(9e9) --Will return a wait of 9e9 seconds instead of the actual function, pretty simple but ¯\_(ツ)_/¯
 end)
