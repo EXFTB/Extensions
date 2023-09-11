@@ -122,6 +122,23 @@ function Extension.Functions.CreateProxy(Target: any, Example: boolean)
     end
 end
 
+function Extension.Functions.GarbageCollectionHook(Function: string, NewFunction: any, Example: boolean)
+    if Example ~= nil and Example == true then
+        print("Example: \nMethod = anything that is being called with parentheses such as object:Destroy() or remoteevent:FireServer() or object:GetAttribute()\n\nCaller = The script calling the function\n\ncheckcaller() = returns true if the executor is the caller\n\nTip: When using __namecall hooks, please use . instead of : to avoid C-Stack overflow, such as STR:find(partofstring) would be STR.find(STR, partofstring) or object:GetAttribute(att) would be object.GetAttribute(object, att) or object:Destroy() would be object.Destroy(object) \n\nlocal OldFunction = nil\nOldFunction = Extension.Functions.HookMethod(game, \"__namecall\", function(self, ...)\n    local Arguements = {...}\n    local NcallSelf = tostring(self)\n    local Caller = getcallingscript()\n    local Method = getnamecallmethod()\n\n    if Method == \"Destroy\" and NcallSelf:lower() == \"humanoid\" then\n        return --If anything on the CLIENT tries to destroy any humanoid\n    end\n\n\n    if Method == \"Destroy\" and NcallSelf:lower() == \"humanoid\" and tostring(self.Parent) == tostring(LocalPlayer) then\n        return --If anything on the CLIENT tries to destroy your humanoid\n    end\n\n\n    if (not checkcaller()) and Method == \"Destroy\" and tostring(self.Parent) == tostring(LocalPlayer) then\n        return --If the game (CLIENT) tries to destroy anything in your character\n    end    \n    return OldFunction(self, ...)\nend)")
+    else
+        if Function ~= nil and NewFunction ~= nil and typeof(Function) == "string" and typeof(NewFunction) == "function" then
+            for _, Garbage in ipairs(getgc(true)) do
+                if typeof(Garbage) == "table" and rawget(Garbage, Function) then
+                    hookfunction(rawget(Garbage, Function), NewFunction)
+                    task.wait(0.01)
+                end
+            end
+        else
+            warn("Error, possible errors:\nFunction is nil\nFunction is invalid\nNewFunction is nil\nNewFunction is invalid, please refer to the example.")
+        end
+    end
+end
+
 function Extension.Functions.ClearCache()
     Extension.Cache = {}
 end
