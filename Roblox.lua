@@ -13,7 +13,7 @@ function Extension.Functions.Help(State)
         if State == "Example" then
             print("To know how to use each and every function that this extension, follow these steps:\nExample: Extensions.Functions.Alive(nil, nil, true), third arguement in this case being set to true will print out instructions on how to use the function.")
         elseif State == "General" then
-            print("Arguements to all functions and all functions are listed in https://github.com/EXFTB/Extensions/Roblox.readme")
+            print("Arguements to all functions and all functions are listed in https://raw.githubusercontent.com/EXFTB/Extensions/main/Roblox.readme")
         end
     end
 end
