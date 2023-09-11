@@ -30,7 +30,7 @@ OldCall = Extension.Functions.HookMethod(game, "__namecall", function(self)
         print("True!")
     end
 
-    local ProxySelf = Functions.CreateProxy(self)
+    local ProxySelf = Functions.CreateProxy(self) --Only creates it one time, and returns it if it's called again.
     if ProxySelf:IsA("BasePart") then --This will not cause C-Stack overflow since proxy self automatically does self.IsA(self, ...) for you!
         print("True!")
     end
