@@ -4,16 +4,17 @@ local Functions = Extension.Functions
 local Variables = Extension.Variables
 
 --Help
-Functions.Help() --Prints out 'help instructions'
+If you need examples on how to use functions such as hookmethods you just have to add an arguement that says true
+Functions.Define("Players", game.Players, true) instead of Functions.Define("Players", game.Players)
 
 --All functions (so far) and their arguements:
-Functions.Help(State: string)
 Functions.Define(Name: string, Definition: any, Example: boolean)
 Functions.Alive(Player: player, Example: boolean)
 Functions.GetRankInGroup(Player: player, Group: group, Example: boolean)
 Functions.Hook(OldFunction: any, NewFunction: any, Example: boolean)
 Functions.HookMethod(Table: any, Method: any, NewFunction: any, Example: boolean)
 Functions.CreateProxy(Target: any, Example: boolean)
+Functions.ClearCache()
 
 --Hook
 local Function = require(moduleblablabla).voidcheck --example
