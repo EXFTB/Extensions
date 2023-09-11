@@ -13,9 +13,27 @@ Functions.Alive(Player: player, Example: boolean)
 Functions.GetRankInGroup(Player: player, Group: group, Example: boolean)
 Functions.Hook(OldFunction: any, NewFunction: any, Example: boolean)
 Functions.HookMethod(Table: any, Method: any, NewFunction: any, Example: boolean)
+Functions.CreateProxy(Target: any, Example: boolean)
 
 --Hook
 local Function = require(moduleblablabla).voidcheck --example
 Functions.Hook(Function, function()
     return 
+end)
+
+
+--Hookmetamethod with CreateProxy (to avoid C-Stack overflow when using namecallhooks)
+local OldCall = nil
+OldCall = Extension.Functions.HookMethod(game, "__namecall", function(self)
+    
+    if self:IsA("BasePart") then --Using : would usually cause C-Stack overflow in a namecall hook, therefore you have to do self.IsA(self, "BasePart"). However you can do this another way with the CreateProxy function.
+        print("True!")
+    end
+
+    local ProxySelf = Functions.CreateProxy(self)
+    if ProxySelf:IsA("BasePart") then --This will not cause C-Stack overflow since proxy self automatically does self.IsA(self, ...) for you!
+        print("True!")
+    end
+    
+    return OldCall(self)
 end)
